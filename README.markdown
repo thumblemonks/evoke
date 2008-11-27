@@ -12,7 +12,12 @@ Let's say you have an app that needs to send custom reminders to users (like a c
 
 So, with Evoke, you could do 1 and 2, but then just send a request to Evoke for it to store a URL and a date/time the URL should be called. When invoked at the date/time you set, this URL will theoretically trigger the email you want to send. You don't need to run any other services that you are afraid will crash and you not know about it, leading to headaches and custom services code on your application servers. Thumble Monks & Evoke will take care of it.
 
-#### CAVEATS
+### Coming soon ...
+
+* A JavaScript library for you to use so that you don't need to do anything special or even need a real web-app. Just HTML and JavaScript, baby!
+* An ActiveResource plugin for you to use in your Rails app
+
+## CAVEATS
 
 **This code isn't running anywhere yet because we're still writing it.**
 
