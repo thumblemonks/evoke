@@ -32,8 +32,4 @@ class Test::Unit::TestCase
 
   def O(*args) OpenStruct.new(*args); end # Shortcut for OpenStruct
 
-    # Generic test helpers
-
-  def deny(check, message=nil) assert(!check, message); end
-
 end

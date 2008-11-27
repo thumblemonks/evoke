@@ -1,3 +1,5 @@
+# TODO: Extract all of this into a gem called thumblemonks-sinatra_extensions or something
+# Might/Should include database stuff
 module Thumblemonks
   module Sinatra
     module Extensions

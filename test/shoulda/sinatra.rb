@@ -1,5 +1,6 @@
 require 'json'
 
+# TODO: Extract all of this into a gem called thumblemonks-shoulda_sinatra or something
 module Thumblemonks
   module Sinatra
     module Shoulda
@@ -33,6 +34,10 @@ module Thumblemonks
       end # Macros
 
       module Helpers
+        def deny(check, message=nil)
+          assert(!check, message)
+        end
+
         def assert_response(status)
           assert_equal status, @response.status
         end
