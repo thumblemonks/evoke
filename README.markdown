@@ -83,4 +83,4 @@ Someone for sure. Probably our wives.
 
 # Legal
 
-Copyright &copy; 2008 Justin Knowlden, Gabriel Gironda, Thumble Monks, released under the MIT license
+Copyright &copy; 2008 Justin Knowlden, Gabriel Gironda, Dan Hodos, Thumble Monks, released under the MIT license
