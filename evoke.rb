@@ -21,7 +21,7 @@ def invalid_record(record)
   throw :halt, [422, json_response(:errors => record.errors.full_messages)]
 end
 
-post("/evoke") do
+post("/callbacks") do
   @callback = Callback.new(params)
   if @callback.save
     status(201)
