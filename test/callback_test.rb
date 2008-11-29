@@ -5,10 +5,20 @@ class CallbackTest < Test::Unit::TestCase
   should_have_db_column :data
   should_have_db_column :called_back
 
-  def setup; @callback = Factory(:callback); end
-
   context "called back!" do
-    setup { @callback.called_back! }
+    setup do
+      @callback = Factory(:callback)
+      @callback.called_back!
+    end
     should("return true for called back?") { assert @callback.called_back? }
   end
+
+  context "after create" do
+    setup do
+      @callback = Factory(:callback)
+    end
+    
+    should_change 'Delayed::Job.count', :by => 1
+  end
+
 end
