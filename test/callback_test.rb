@@ -4,6 +4,7 @@ class CallbackTest < Test::Unit::TestCase
   should_require_attributes :url, :callback_at
   should_have_db_column :data
   should_have_db_column :called_back
+  should_allow_values_for :guid, nil
 
   context "called back!" do
     setup do
@@ -20,6 +21,8 @@ class CallbackTest < Test::Unit::TestCase
     
     should_change 'Delayed::Job.count', :by => 1
   end
+
+  should "turn blank guid into nil"
 
   context "by guid" do
     setup do

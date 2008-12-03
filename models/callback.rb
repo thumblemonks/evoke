@@ -1,6 +1,6 @@
 class Callback < ActiveRecord::Base
   validates_presence_of :url, :callback_at
-  validates_uniqueness_of :guid
+  validates_uniqueness_of :guid, :allow_nil => true
 
   def self.by_guid(guid)
     first(:conditions => {:guid => guid})
@@ -17,4 +17,5 @@ class Callback < ActiveRecord::Base
   def perform
     $stdout.puts "Who's your daddy?!"
   end
+
 end
