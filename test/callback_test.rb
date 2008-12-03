@@ -2,7 +2,6 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 class CallbackTest < Test::Unit::TestCase
   should_require_attributes :url, :callback_at
-  # should_have_unique_column :guid
   should_have_db_column :data
   should_have_db_column :called_back
 
@@ -27,6 +26,8 @@ class CallbackTest < Test::Unit::TestCase
       @callback = Factory(:callback, :guid => 'luscious-jackson')
     end
 
+    should_require_unique_attributes :guid
+
     should "return a single callback if guid is exists" do
       assert_equal @callback, Callback.by_guid('luscious-jackson')
     end
@@ -34,9 +35,6 @@ class CallbackTest < Test::Unit::TestCase
     should "return nil if guid does not exist" do
       assert_nil Callback.by_guid('wit-_my-naked-eye-i-saw')
     end
-
-    should "be unique"
-    should "not be required"
   end
 
 end
