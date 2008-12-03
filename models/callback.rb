@@ -1,6 +1,10 @@
 class Callback < ActiveRecord::Base
   validates_presence_of :url, :callback_at
 
+  def self.by_guid(guid)
+    first(:conditions => {:guid => guid})
+  end
+
   def called_back!
     update_attributes!(:called_back => true)
   end

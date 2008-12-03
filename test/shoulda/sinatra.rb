@@ -27,10 +27,10 @@ module Thumblemonks
           should_have_content_type 'application/json'
           should "have JSON response in the body" do
             json = self.instance_eval(&block) if block_given?
-            assert_response_body json.to_json
+            json = json.to_json unless json.instance_of?(String) || json.instance_of?(Regexp)
+            assert_response_body json
           end
         end
-
       end # Macros
 
       module Helpers
@@ -43,7 +43,7 @@ module Thumblemonks
         end
 
         def assert_response_body(body)
-          assert_equal body, @response.body
+          assert_match body, @response.body
         end
 
         def assert_content_type(expected)
