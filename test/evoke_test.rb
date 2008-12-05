@@ -106,4 +106,25 @@ class EvokeTest < Test::Unit::TestCase
     end
   end
 
+  context "retrieving a callback" do
+    context "without a guid" do
+      setup { get_it '/callbacks' }
+      should_have_response_status 404
+    end
+
+    context "without an existing guid" do
+      setup { get_it '/callbacks/franken-furter' }
+      should_have_response_status 404
+    end
+
+    context "with a guid" do
+      setup do
+        @callback = Factory(:callback, :guid => 'kids-with-guns')
+        get_it '/callbacks/kids-with-guns'
+      end
+      should_have_response_status 201
+      should_have_json_response { @callback }
+    end
+  end
+
 end

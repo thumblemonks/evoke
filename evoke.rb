@@ -15,18 +15,15 @@ helpers do
   include Thumblemonks::Sinatra::Helpers
 end
 
-def manage_resource(resource)
-  yield(resource)
-  status(201)
-  json_response(resource)
-rescue ActiveRecord::RecordInvalid => e
-  invalid_record(e.record)
-end
-
-# Actions
+# Resource management
 
 not_found do
   throw :halt, [404, json_response('')]
+end
+
+def valid_record(record)
+  status(201)
+  json_response(record)
 end
 
 def invalid_record(record)
@@ -35,8 +32,19 @@ def invalid_record(record)
   throw :halt, [422, json_response(:errors => record.errors.full_messages)]
 end
 
-# get "/callbacks/:guid" do
-# end
+def manage_resource(resource)
+  raise Sinatra::NotFound unless resource
+  yield(resource) if block_given?
+  valid_record(resource)
+rescue ActiveRecord::RecordInvalid => e
+  invalid_record(e.record)
+end
+
+# Actions
+
+get "/callbacks/:guid" do
+  manage_resource(Callback.by_guid(params['guid']))
+end
 
 post "/callbacks" do
   manage_resource(Callback.new(params)) do |callback|
@@ -47,10 +55,8 @@ post "/callbacks" do
 end
 
 put "/callbacks/:guid" do
-  @callback = Callback.by_guid(params['guid'])
-  raise Sinatra::NotFound unless @callback
-  attributes = params.reject {|k,v| k == "guid"}
-  manage_resource(@callback) do |callback|
+  manage_resource(Callback.by_guid(params['guid'])) do |callback|
+    attributes = params.reject {|k,v| k == "guid"}
     callback.delayed_job.destroy
     callback.update_attributes!(attributes)
     job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
