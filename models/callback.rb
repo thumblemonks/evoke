@@ -11,16 +11,12 @@ class Callback < ActiveRecord::Base
     first(:conditions => {:guid => guid})
   end
 
-  def called_back!
-    update_attributes!(:called_back => true)
-  end
-
   def perform
     http_method = (method || 'get').to_s
     request_args = [url]
     request_args << data if requires_payload?
     RestClient.send(http_method, *request_args)
-    called_back!
+    update_attribute(:called_back, true)
   rescue RestClient::Exception => e
     update_attributes!(:error_message => e.message)
   end

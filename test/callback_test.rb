@@ -9,14 +9,6 @@ class CallbackTest < Test::Unit::TestCase
   should_belong_to :delayed_job
   should_allow_values_for :guid, nil
 
-  context "called back!" do
-    setup do
-      @callback = Factory(:callback)
-      @callback.called_back!
-    end
-    should("return true for called back?") { assert @callback.called_back? }
-  end
-
   context "before save" do
     setup do
       @callback = Factory(:callback, :data => nil, :guid => '  ')

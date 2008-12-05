@@ -15,6 +15,10 @@ helpers do
   include Thumblemonks::Sinatra::Helpers
 end
 
+error do
+  $stdout.puts "Sorry there was a nasty error - #{request.env['sinatra.error'].inspect}"
+end
+
 # Resource management
 
 not_found do
@@ -57,7 +61,7 @@ end
 put "/callbacks/:guid" do
   manage_resource(Callback.by_guid(params['guid'])) do |callback|
     attributes = params.reject {|k,v| k == "guid"}
-    callback.delayed_job.destroy
+    callback.delayed_job.destroy if callback.delayed_job
     callback.update_attributes!(attributes)
     job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
     callback.update_attributes!(:delayed_job => job)
