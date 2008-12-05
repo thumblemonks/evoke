@@ -15,7 +15,12 @@ class Callback < ActiveRecord::Base
   end
 
   def perform
-    $stdout.puts "Who's your daddy?!"
+    http_method = (method || 'get')
+    request_args = [url, data].compact
+    RestClient.send(http_method, *request_args)
+    called_back!
+  rescue RestClient::Exception => e
+    update_attributes!(:error_message => e.message)
   end
 
 end

@@ -7,3 +7,4 @@ require_local_lib('../lib/*.rb')
 require_local_lib('../models/*.rb')
 require 'logger'
 require 'delayed_job'
+require 'rest_client'
