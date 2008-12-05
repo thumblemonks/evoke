@@ -16,12 +16,11 @@ helpers do
 end
 
 def manage_resource(resource)
-  if yield(resource)
-    status(201)
-    json_response(resource)
-  else
-    invalid_record(resource)
-  end
+  yield(resource)
+  status(201)
+  json_response(resource)
+rescue ActiveRecord::RecordInvalid => e
+  invalid_record(e.record)
 end
 
 # Actions
@@ -36,13 +35,25 @@ def invalid_record(record)
   throw :halt, [422, json_response(:errors => record.errors.full_messages)]
 end
 
-post("/callbacks") do
-  manage_resource(Callback.new(params)) { |resource| resource.save }
+# get "/callbacks/:guid" do
+# end
+
+post "/callbacks" do
+  manage_resource(Callback.new(params)) do |callback|
+    callback.save!
+    job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
+    callback.update_attributes!(:delayed_job => job)
+  end
 end
 
-put("/callbacks/:guid") do
+put "/callbacks/:guid" do
   @callback = Callback.by_guid(params['guid'])
   raise Sinatra::NotFound unless @callback
   attributes = params.reject {|k,v| k == "guid"}
-  manage_resource(@callback) { |resource| resource.update_attributes(attributes) }
+  manage_resource(@callback) do |callback|
+    callback.delayed_job.destroy
+    callback.update_attributes!(attributes)
+    job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
+    callback.update_attributes!(:delayed_job => job)
+  end
 end

@@ -6,6 +6,7 @@ class CallbackTest < Test::Unit::TestCase
   should_have_db_column :called_back
   should_have_db_column :method
   should_have_db_column :error_message
+  should_belong_to :delayed_job
   should_allow_values_for :guid, nil
 
   context "called back!" do
@@ -14,14 +15,6 @@ class CallbackTest < Test::Unit::TestCase
       @callback.called_back!
     end
     should("return true for called back?") { assert @callback.called_back? }
-  end
-
-  context "after create" do
-    setup do
-      @callback = Factory(:callback)
-    end
-    
-    should_change 'Delayed::Job.count', :by => 1
   end
 
   context "before save" do

@@ -1,4 +1,6 @@
 class Callback < ActiveRecord::Base
+  belongs_to :delayed_job, :class_name => 'Delayed::Job'
+
   validates_presence_of :url, :callback_at
   validates_uniqueness_of :guid, :allow_nil => true
 
@@ -11,10 +13,6 @@ class Callback < ActiveRecord::Base
 
   def called_back!
     update_attributes!(:called_back => true)
-  end
-
-  def after_create
-    Delayed::Job.enqueue(self, 0, self.callback_at)
   end
 
   def perform
@@ -39,4 +37,5 @@ private
   def requires_payload?
     %w[post put].include?(method)
   end
+
 end
