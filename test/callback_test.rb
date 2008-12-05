@@ -24,7 +24,19 @@ class CallbackTest < Test::Unit::TestCase
     should_change 'Delayed::Job.count', :by => 1
   end
 
-  should "turn blank guid into nil"
+  context "before save" do
+    setup do
+      @callback = Factory(:callback, :data => nil, :guid => '  ')
+    end
+    
+    should "set nil data to empty string" do
+      assert_equal '', @callback.data
+    end
+
+    should "turn blank guid into nil" do
+      assert_nil @callback.guid
+    end
+  end
 
   context "by guid" do
     setup do
@@ -42,8 +54,8 @@ class CallbackTest < Test::Unit::TestCase
     end
   end
 
-  context "perform" do
-    context "with url but no method or data" do
+  context "inducing perform" do
+    context "with url but no method" do
       setup do
         @callback = Factory(:callback, :data => nil)
       end
@@ -58,38 +70,87 @@ class CallbackTest < Test::Unit::TestCase
         @callback.perform
         assert @callback.called_back?
       end
-    end
+    end # with url but no method
 
-    context "with url and data but no method" do
-      setup do
-        @callback = Factory(:callback, :data => 'foo=bar&baz=goo')
-      end
-      
-      should "send data as payload of get request" do
-        expect_restful_request(:get, @callback.url, @callback.data)
-        @callback.perform
-      end
+    context "with get" do
+      context "and no data" do
+        setup { @callback = Factory(:callback, :method => 'get', :data => nil) }
 
-      should "note that the url was called back" do
-        stub_restful_requests
-        @callback.perform
-        assert @callback.called_back?
-      end
-    end
-
-    context "with url and method but no data" do
-      setup { @callback = Factory(:callback, :method => 'put', :data => nil) }
-      should "use method provided by client in request" do
-        expect_restful_request(:put, @callback.url)
-        @callback.perform
+        should "still not provide a payload" do
+          expect_restful_request(:get, @callback.url)
+          @callback.perform
+        end
       end
 
-      should "note that the url was called back" do
-        stub_restful_requests
-        @callback.perform
-        assert @callback.called_back?
+      context "and data" do
+        setup { @callback = Factory(:callback, :method => 'get', :data => 'abc') }
+
+        should "still not inlcude a payload" do
+          expect_restful_request(:get, @callback.url)
+          @callback.perform
+        end
       end
-    end
+    end # with get
+
+    context "with put" do
+      context "and no data" do
+        setup { @callback = Factory(:callback, :method => 'put', :data => nil) }
+
+        should "still pass a payload of empty string" do
+          expect_restful_request(:put, @callback.url, '')
+          @callback.perform
+        end
+      end
+
+      context "and data" do
+        setup { @callback = Factory(:callback, :method => 'put', :data => 'abc') }
+
+        should "include the data as the payload" do
+          expect_restful_request(:put, @callback.url, 'abc')
+          @callback.perform
+        end
+      end
+    end # with put
+
+    context "with post" do
+      context "and no data" do
+        setup { @callback = Factory(:callback, :method => 'post', :data => nil) }
+
+        should "still pass a payload of empty string" do
+          expect_restful_request(:post, @callback.url, '')
+          @callback.perform
+        end
+      end
+
+      context "and data" do
+        setup { @callback = Factory(:callback, :method => 'post', :data => 'abc') }
+
+        should "include the data as the payload" do
+          expect_restful_request(:post, @callback.url, 'abc')
+          @callback.perform
+        end
+      end
+    end # with post
+
+    context "with delete" do
+      context "and no data" do
+        setup { @callback = Factory(:callback, :method => 'delete', :data => nil) }
+
+        should "still not provide a payload" do
+          expect_restful_request(:delete, @callback.url)
+          @callback.perform
+        end
+      end
+
+      context "and data" do
+        setup { @callback = Factory(:callback, :method => 'delete', :data => 'abc') }
+
+        should "still not inlcude a payload" do
+          expect_restful_request(:delete, @callback.url)
+          @callback.perform
+        end
+      end
+    end # with delete
 
     context "which then fails" do
       setup do
@@ -98,14 +159,14 @@ class CallbackTest < Test::Unit::TestCase
         @callback.perform
       end
 
-      should "not note the url as being called back" do
+      should "note that the url was not called back" do
         deny @callback.called_back?
       end
 
       should "record error message in callback" do
         assert_equal "Resource not found", @callback.error_message
       end
-    end
-  end
+    end # which then fails
+  end # inducing perform
 
 end

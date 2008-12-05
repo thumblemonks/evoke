@@ -31,6 +31,8 @@ not_found do
 end
 
 def invalid_record(record)
+  # Need a simple logging facility
+  # $stdout.puts "ERROR: record #{record.inspect} says #{record.errors.full_messages.inspect}"
   throw :halt, [422, json_response(:errors => record.errors.full_messages)]
 end
 
