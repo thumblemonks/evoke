@@ -117,6 +117,14 @@ class EvokeTest < Test::Unit::TestCase
       should_have_response_status 404
     end
 
+    context "without a blank guid" do
+      setup do
+        Factory(:callback)
+        get_it '/callbacks/'
+      end
+      should_have_response_status 404
+    end
+
     context "with a guid" do
       setup do
         @callback = Factory(:callback, :guid => 'kids-with-guns')
