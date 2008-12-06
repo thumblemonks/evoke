@@ -12,6 +12,7 @@ require 'shoulda/active_record'
 require 'mocha'
 require File.join(File.dirname(__FILE__), 'model_factory')
 
+require 'chicago/shoulda'
 require_local_lib('../test/shoulda')
 
 class Test::Unit::TestCase
