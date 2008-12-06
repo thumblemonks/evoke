@@ -1,7 +1,8 @@
-require 'rubygems'
-require 'hpricot'
+ENV['APP_ENV'] = 'test'
 
-require 'sinatra'
+require 'rubygems'
+
+require File.join(File.dirname(__FILE__), '..', 'config', 'boot')
 require 'sinatra/test/unit'
 require File.join(File.dirname(__FILE__), '..', 'evoke')
 
@@ -11,7 +12,7 @@ require 'shoulda/active_record'
 require 'mocha'
 require File.join(File.dirname(__FILE__), 'model_factory')
 
-require_local_lib('../test/shoulda/*.rb')
+require_local_lib('../test/shoulda')
 
 class Test::Unit::TestCase
   alias_method :old_run, :run

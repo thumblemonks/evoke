@@ -1,10 +1,14 @@
-require 'rubygems'
-
-def require_local_lib(pattern)
-  Dir.glob(File.join(File.dirname(__FILE__), pattern)).each {|f| require f }
+ENV['APP_ENV'] ||= 'development'
+def require_local_lib(path)
+  Dir["#{File.dirname(__FILE__)}/#{path}/*.rb"].each {|f| require f }
 end
-require_local_lib('../lib/*.rb')
-require_local_lib('../models/*.rb')
-require 'logger'
-require 'delayed_job'
+
+%w[rubygems logger config/database].each(&method(:require))
 require 'rest_client'
+require 'delayed_job'
+require 'sinatra'
+
+configure(:test) { set :run, false }
+
+require_local_lib('../lib')
+require_local_lib('../models')

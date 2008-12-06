@@ -1,19 +1,15 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
-require 'boot'
 
 desc 'Default task: run all tests'
 task :default => [:test]
 
-task(:set_test_env) { ENV['SINATRA_ENV'] ||= 'test' }
+task(:set_test_env) { ENV['APP_ENV'] ||= 'test' }
 
-task :environment do
-  require './config/boot'
-  Thumblemonks::Database.fire_me_up(ENV['SINATRA_ENV'] || 'development')
-end
+task(:environment) { }
 
-task :test => [:set_test_env, :environment, 'db:migrate']
+task :test => [:set_test_env]
 desc 'Run all tests'
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/*_test.rb']

@@ -25,3 +25,5 @@ module Thumblemonks
     end # Extensions
   end # Sinatra
 end # Thumblemonks
+
+# Sinatra::Application.instance_eval { include Thumblemonks::Sinatra::Extensions }

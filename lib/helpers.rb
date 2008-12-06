@@ -20,3 +20,5 @@ module Thumblemonks
     end # Helpers
   end # Sinatra
 end # Thumblemonks
+
+# Sinatra::EventContext.instance_eval { include Thumblemonks::Sinatra::Helpers }

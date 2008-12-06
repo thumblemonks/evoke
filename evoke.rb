@@ -1,11 +1,6 @@
 require File.join(File.dirname(__FILE__), 'config', 'boot')
-require 'sinatra'
 
 configure(:development, :test) { require 'ruby-debug' }
-
-configure do
-  Thumblemonks::Database.fire_me_up(Sinatra.env)
-end
 
 # Setup
 
