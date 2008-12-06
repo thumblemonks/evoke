@@ -7,6 +7,7 @@ end
 require 'rest_client'
 require 'delayed_job'
 require 'sinatra'
+require 'chicago'
 
 configure(:test) { set :run, false }
 
