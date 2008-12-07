@@ -4,7 +4,7 @@ APP_ENV = ENV['APP_ENV'] || 'production'
 NAME = 'evoke_consumer'
 SCRIPT = "#{NAME}.rb"
 
-PATH = [Dir.pwd, '/var/app/evoke/current'].detect { |path| File.exists?("#{path}/#{SCRIPT}") }
+PATH = ['/var/app/evoke/current', Dir.pwd].detect { |path| File.exists?("#{path}/#{SCRIPT}") }
 
 unless PATH
   $stderr.puts "ERROR Exiting"
