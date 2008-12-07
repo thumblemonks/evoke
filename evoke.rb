@@ -2,12 +2,6 @@ require File.join(File.dirname(__FILE__), 'config', 'boot')
 
 configure(:development, :test) { require 'ruby-debug' }
 
-# include Thumblemonks::Sinatra::Extensions
-# 
-# helpers do
-#   include Thumblemonks::Sinatra::Helpers
-# end
-
 error do
   $stdout.puts "Sorry there was a nasty error - #{request.env['sinatra.error'].inspect}"
 end
