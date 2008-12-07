@@ -2,18 +2,21 @@ God.pid_file_directory = '/var/tmp'
 
 APP_ENV = ENV['APP_ENV'] || 'production'
 NAME = 'evoke_consumer'
+SCRIPT = "#{NAME}.rb"
 
-unless File.exists?('evoke_consumer.rb')
+PATH = [Dir.pwd, '/var/app/evoke/current'].detect { |path| File.exists?("#{path}/#{SCRIPT}") }
+
+unless PATH
   $stderr.puts "ERROR Exiting"
-  $stderr.puts "ERROR Cannot find script ./evoke_consumer.rb"
+  $stderr.puts "ERROR Cannot find script #{SCRIPT}"
   exit
 end
 
 God.watch do |watcher|
   watcher.name = NAME
   watcher.interval = 15.seconds
-  watcher.start = "APP_ENV=#{APP_ENV} ruby #{NAME}.rb"
-  watcher.restart = "APP_ENV=#{APP_ENV} ruby #{NAME}.rb"
+  watcher.start = "cd #{PATH} && APP_ENV=#{APP_ENV} ruby #{SCRIPT}"
+  watcher.restart = "cd #{PATH} && APP_ENV=#{APP_ENV} ruby #{SCRIPT}"
   watcher.restart_grace = 5.seconds
   watcher.log = "/var/tmp/#{NAME}.log"
 
