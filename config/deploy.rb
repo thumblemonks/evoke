@@ -28,12 +28,12 @@ before("deploy:cold") { set :cold_deploy, true }
 #
 # DBLOGIN.YML support
 
-# task :after_update_code, :roles => :app, :except => {:no_symlink => true} do 
-#   run <<-CMD 
-# cd #{release_path} && 
-# ln -nfs #{shared_path}/config/dblogin.yml #{release_path}/config/dblogin.yml
-# CMD
-# end
+task :after_update_code, :roles => :app, :except => {:no_symlink => true} do 
+  run <<-CMD 
+cd #{release_path} && 
+ln -nfs #{shared_path}/config/dblogin.yml #{release_path}/config/dblogin.yml
+CMD
+end
 
 # after "deploy:setup" do
 #   run "mkdir #{shared_path}/config"
