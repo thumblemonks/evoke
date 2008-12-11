@@ -7,7 +7,6 @@ require 'evoke'
 Sinatra::Application.default_options.update(
   :run => false,
   :env => ENV['APP_ENV'],
-  :port => ,
   :raise_errors => true,
   :root => File.dirname(__FILE__)
 )
