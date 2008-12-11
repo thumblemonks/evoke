@@ -17,3 +17,5 @@ STDOUT.reopen(log)
 STDERR.reopen(log)
 
 require 'evoke'
+
+run Sinatra.application
