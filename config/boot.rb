@@ -9,7 +9,6 @@ require 'delayed_job'
 require 'sinatra'
 require 'chicago'
 
-# configure(:test, :production) { set :run, false }
 set :run, false
 
 require_local_lib('../lib')
