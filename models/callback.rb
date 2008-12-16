@@ -11,16 +11,6 @@ class Callback < ActiveRecord::Base
     first(:conditions => {:guid => guid})
   end
 
-  def perform
-    http_method = (method || 'get').to_s
-    request_args = [url]
-    request_args << data if requires_payload?
-    RestClient.send(http_method, *request_args)
-    update_attribute(:called_back, true)
-  rescue RestClient::Exception => e
-    update_attributes!(:error_message => e.message)
-  end
-
 private
   def data_cannot_be_nil
     write_attribute(:data, '') if data.nil?
@@ -28,10 +18,6 @@ private
 
   def guid_cannot_be_blank
     write_attribute(:guid, nil) if guid && guid.strip == ''
-  end
-
-  def requires_payload?
-    %w[post put].include?(method)
   end
 
 end

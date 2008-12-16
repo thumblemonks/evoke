@@ -17,16 +17,12 @@ class EvokeTest < Test::Unit::TestCase
     context "with valid data" do
       setup do
         @guid = Factory.next(:guid)
+        CallbackRunner.expects(:make_job_from_callback!).with(anything)
         post_it "/callbacks", Factory.attributes_for(:callback, :guid => @guid)
       end
       should_have_response_status 201
       should_have_json_response { Callback.first }
       should_change "Callback.count", :by => 1
-      should_change 'Delayed::Job.count', :by => 1
-
-      should "tie the callback to a new job" do
-        assert_not_nil Callback.by_guid(@guid).delayed_job
-      end
     end
   end
 
@@ -86,22 +82,13 @@ class EvokeTest < Test::Unit::TestCase
       should_have_json_response :errors => ["Url can't be blank"]
     end
 
-    context "when updating delayed job" do
+    context "when updating job" do
       setup do
-        @old_job = @callback.delayed_job
+        CallbackRunner.expects(:replace_job_for_callback!).with(@callback)
+      end
+      
+      should "replace job for same callback" do
         put_it "/callbacks/#{@callback.guid}", :url => "http://bar.baz"
-        @callback.reload
-      end
-      should_change 'Delayed::Job.count', :by => 0
-
-      should "remove the old delayed job" do
-        assert_not_nil @old_job
-        assert_nil Delayed::Job.find_by_id(@old_job.id)
-      end
-
-      should "reference a new delayed job" do
-        assert_not_equal @old_job, @callback.delayed_job
-        assert_not_nil @callback.delayed_job
       end
     end
   end
