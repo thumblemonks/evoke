@@ -7,7 +7,9 @@ class CallbackRunnerTest < Test::Unit::TestCase
     [callback, runner]
   end
 
-  should "barf if no callback given to initializer"
+  should "barf if nil callback given to initializer" do
+    assert_raise(ArgumentError) { CallbackRunner.new(nil) }
+  end
 
   context "making job from callback" do
     setup do

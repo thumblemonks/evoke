@@ -12,6 +12,7 @@ class CallbackRunner
   end
 
   def initialize(callback)
+    raise(ArgumentError, "Callback cannot be nil") unless callback
     @callback = callback
   end
 
