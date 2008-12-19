@@ -2,8 +2,30 @@
 !!!
 %html
   %head
+    %meta{"http-equiv" => 'X-UA-Compatible', :content => 'GROW UP'}
+    %meta{:name => 'viewport', :content => 'width=850'}
     %title
-      Thumblemonks
-      = @title
+      Evoke - Status
+    %link{:href => "/images/tm-block.gif", :rel => "icon"}
+    = stylesheet_include 'reset-min'
+    = stylesheet_include 'application'
   %body
-    = yield
+    #header
+      .container
+        %a.logo{:href => "http://thumblemonks.com"}
+          %img{:src => "/images/header-logo.gif"}
+        %ul.nav
+          %li{:class => 'current'}
+            %a{:href => '/evoke'} Evoke
+        .clear
+
+    #content
+      = yield
+      .clear
+
+    #footer
+      .container
+        %a{:href => "http://creativecommons.org/licenses/by-nc-nd/3.0/"} Copyright &copy;
+        2007 -
+        = Time.now.year
+        %a{:href => "http://thumblemonks.com/"} Thumble Monks

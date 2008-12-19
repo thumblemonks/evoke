@@ -3,7 +3,7 @@ class CallbackRunner
   def self.make_job_from_callback!(callback)
     runner = CallbackRunner.new(callback)
     job = Delayed::Job.enqueue(runner, 0, callback.callback_at)
-    callback.update_attributes!(:delayed_job => job)
+    callback.update_attributes!(:delayed_job => job, :called_back => false)
   end
 
   def self.replace_job_for_callback!(callback)

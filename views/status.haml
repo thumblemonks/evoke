@@ -1,0 +1,35 @@
+#title
+  .container
+    %h1.running Running
+
+.container
+  #columns
+    .left
+      %h3 Last 10 Callbacks
+      %ul
+        - @callbacks.each do |callback| 
+          %li.callback
+            .info
+              = verbal_status_message(callback)
+            .info
+              %span.label Callback
+              %span.data
+                = callback.method.upcase
+                = truncate(callback.url, 50)
+            .info
+              %span.label Evoke on
+              %span.data= callback.callback_at.strftime("%b %d %H:%M:%S")
+            .info
+              %span.label Created on
+              %span.data= callback.created_at.strftime("%b %d %H:%M:%S")
+            - if callback.guid
+              .info
+                %span.label GUID
+                %span.data= callback.guid
+            - if callback.error_message
+              .info
+                %span.label Errors
+                .data= callback.error_message
+    .sidebar
+      %h3 Stats
+      Something

@@ -41,8 +41,6 @@ post "/callbacks" do
   manage_resource(Callback.new(params)) do |callback|
     callback.save!
     CallbackRunner.make_job_from_callback!(callback)
-    # job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
-    # callback.update_attributes!(:delayed_job => job)
   end
 end
 
@@ -51,8 +49,32 @@ put "/callbacks/:guid" do
     attributes = params.reject {|k,v| k == "guid"}
     callback.update_attributes!(attributes)
     CallbackRunner.replace_job_for_callback!(callback)
-    # callback.delayed_job.destroy if callback.delayed_job
-    # job = Delayed::Job.enqueue(callback, 0, callback.callback_at)
-    # callback.update_attributes!(:delayed_job => job)
   end
+end
+
+# Status and stuff
+
+template(:layout) {:application}
+
+catch_all_css
+
+helpers do
+  def truncate(str, n)
+    str.length > n ? "#{str[0..n]}..." : str
+  end
+  
+  def verbal_status_message(callback)
+    if callback.called_back?
+      haml '.okay Already evoked callback', :layout => false
+    elsif callback.should_have_been_called_back? && !callback.called_back?
+      haml '.uhoh This callback should have been evoked but has not yet', :layout => false
+    else
+      haml '.okay Just waiting for callback time', :layout => false
+    end
+  end
+end
+
+get "/status" do
+  @callbacks = Callback.recent
+  haml :status
 end

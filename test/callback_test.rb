@@ -39,4 +39,16 @@ class CallbackTest < Test::Unit::TestCase
     end
   end
 
+  context "should have been called back" do
+    should "return true if callback at is in the past" do
+      @callback = Factory(:callback, :callback_at => Time.now - 1.day)
+      assert @callback.should_have_been_called_back?
+    end
+
+    should "return false if callback at is in the future" do
+      @callback = Factory(:callback, :callback_at => Time.now + 1.day)
+      deny @callback.should_have_been_called_back?
+    end
+  end
+
 end

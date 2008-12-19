@@ -9,7 +9,7 @@ require 'delayed_job'
 require 'sinatra'
 require 'chicago'
 
-set :run, false
+set(:run, false) unless ENV['APP_ENV'] == 'development'
 
 require_local_lib('../lib')
 require_local_lib('../models')

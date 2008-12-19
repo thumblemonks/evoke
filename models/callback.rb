@@ -7,8 +7,14 @@ class Callback < ActiveRecord::Base
   before_save :data_cannot_be_nil
   before_save :guid_cannot_be_blank
 
+  named_scope :recent, :order => 'created_at desc', :limit => 10
+
   def self.by_guid(guid)
     first(:conditions => {:guid => guid})
+  end
+
+  def should_have_been_called_back?
+    callback_at < Time.now
   end
 
 private

@@ -26,14 +26,14 @@ class CallbackRunnerTest < Test::Unit::TestCase
     should "update callback with the new job" do
       job = stub('job')
       Delayed::Job.expects(:enqueue).returns(job)
-      @callback.expects(:update_attributes!).with({:delayed_job => job})
+      @callback.expects(:update_attributes!).with({:delayed_job => job, :called_back => false})
       CallbackRunner.make_job_from_callback!(@callback)
     end
   end
 
   context "replacing job for callback" do
     setup do
-      @callback = Factory(:callback)
+      @callback = Factory(:callback, :called_back => true)
     end
 
     context "when callback has a job" do
@@ -58,8 +58,14 @@ class CallbackRunnerTest < Test::Unit::TestCase
       CallbackRunner.expects(:new).with(@callback).returns(@runner)
       job = stub('job')
       Delayed::Job.expects(:enqueue).with(@runner, 0, @callback.callback_at).returns(job)
-      @callback.expects(:update_attributes!).with({:delayed_job => job})
+      @callback.expects(:update_attributes!).with({:delayed_job => job, :called_back => false})
       CallbackRunner.replace_job_for_callback!(@callback)
+    end
+
+    should "set called back to false" do
+      CallbackRunner.replace_job_for_callback!(@callback)
+      @callback.reload
+      deny @callback.called_back?
     end
   end
 

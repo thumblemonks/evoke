@@ -62,7 +62,10 @@ delayed_job
 ## Requirements
 
 * [Sinatra](http://github.com/bmizerany/sinatra/tree/master)
+* [Chicago](http://github.com/thumblemonks/chicago/tree/master)
 * Ruby JSON
+* [Delayed Job - Thumble Monks remix](http://github.com/thumblemonks/delayed_job/tree/master)
+* Rest Client
 
 ## Setting up an app
 
@@ -76,6 +79,8 @@ We're still working this out.
 ### Configuration
 
     TBD
+    
+    Includes some stuff for running a God task
 
 ### Running
 
