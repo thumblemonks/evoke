@@ -11,7 +11,7 @@ class Status
     DRb.start_service("druby://127.0.0.1:0")
     server = DRbObject.new(nil, God::Socket.socket(17165))
 
-    server.status["evoke_consumer"][:state]
+    server.status["evoke_consumer"][:state] == :up
   rescue DRb::DRbConnError
     false
   ensure
