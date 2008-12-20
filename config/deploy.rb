@@ -22,6 +22,20 @@ namespace :deploy do
   end
 end
 
+namespace :god do
+  desc "Terminate the God server to stop the evoke consumer"
+  task :terminate do
+    run "sudo god terminate"
+    puts "love."
+  end
+
+  desc "Start the God server with the evoke consumer recipe"
+  task :start do
+    run "sudo god -c #{current_path}/config/evoke.god"
+    puts "love."
+  end
+end
+
 set :cold_deploy, false
 before("deploy:cold") { set :cold_deploy, true }
 
