@@ -8,6 +8,7 @@ class Callback < ActiveRecord::Base
   before_save :guid_cannot_be_blank
 
   named_scope :recent, :order => 'created_at desc', :limit => 10
+  named_scope :pending, :conditions => {:called_back => false}
 
   def self.by_guid(guid)
     first(:conditions => {:guid => guid})
@@ -25,5 +26,4 @@ private
   def guid_cannot_be_blank
     write_attribute(:guid, nil) if guid && guid.strip == ''
   end
-
 end

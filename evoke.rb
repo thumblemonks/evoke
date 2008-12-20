@@ -75,6 +75,6 @@ helpers do
 end
 
 get "/status" do
-  @callbacks = Callback.recent
+  @status = Status.new
   haml :status
 end

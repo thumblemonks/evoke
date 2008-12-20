@@ -51,4 +51,26 @@ class CallbackTest < Test::Unit::TestCase
     end
   end
 
+  context "recent callbacks" do
+    setup do
+      @callbacks = (0...20).map {|i| Factory(:callback, :callback_at => i.days.ago)}
+    end
+    
+    should "return most recent 10 callbacks" do
+      assert_equal @callbacks[0...10], Callback.recent
+    end
+  end
+
+  context "pending callbacks" do
+    setup do
+      @callbacks = (0...20).map do |i|
+        Factory(:callback, :callback_at => i.days.ago, :called_back => (i % 2 == 0))
+      end
+    end
+    
+    should "return those not called back" do
+      assert_equal 10, Callback.pending.count
+    end
+  end
+
 end

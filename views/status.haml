@@ -1,13 +1,18 @@
 #title
   .container
-    %h1.running Running
+    %h1
+      Consumer:
+      - if @status.consumer_running?
+        %span.okay running
+      - else
+        %span.uhoh not running
 
 .container
   #columns
     .left
       %h3 Last 10 Callbacks
       %ul
-        - @callbacks.each do |callback| 
+        - @status.recent_callbacks.each do |callback| 
           %li.callback
             .info
               = verbal_status_message(callback)
@@ -26,10 +31,22 @@
               .info
                 %span.label GUID
                 %span.data= callback.guid
+            - if callback.delayed_job
+              .info
+                %span.label Attempts
+                %span.data= callback.delayed_job.attempts
             - if callback.error_message
               .info
                 %span.label Errors
                 .data= callback.error_message
     .sidebar
       %h3 Stats
-      Something
+      .info
+        %span.label Total callbacks
+        %span.data= @status.total_callback_count
+      .info
+        %span.label Jobs in queue
+        %span.data= @status.jobs_in_queue_count
+      .info
+        %span.label Pending callbacks
+        %span.data= @status.pending_callback_count
