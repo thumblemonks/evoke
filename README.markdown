@@ -63,9 +63,11 @@ delayed_job
 
 * [Sinatra](http://github.com/bmizerany/sinatra/tree/master)
 * [Chicago](http://github.com/thumblemonks/chicago/tree/master)
+* HAML
 * Ruby JSON
-* [Delayed Job - Thumble Monks remix](http://github.com/thumblemonks/delayed_job/tree/master)
+* [Delayed Job](http://github.com/tobi/delayed_job/tree/master)
 * Rest Client
+* ActiveRecord & Sqlite3-ruby
 
 ## Setting up an app
 

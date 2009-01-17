@@ -10,9 +10,9 @@ set :user, "deploy"
 set :use_sudo, false
 set :runner, nil
 
-role :app, "evoke.cr.annealer.org"
-role :web, "evoke.cr.annealer.org"
-role :db,  "evoke.cr.annealer.org", :primary => true
+role :app, "evoke.thumblemonks.com"
+role :web, "evoke.thumblemonks.com"
+role :db,  "evoke.thumblemonks.com", :primary => true
 
 namespace :deploy do
   desc "Restart Application"
