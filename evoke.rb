@@ -2,11 +2,6 @@ require File.join(File.dirname(__FILE__), 'config', 'boot')
 
 configure(:development, :test) { require 'ruby-debug' }
 
-# configure do
-#   set :public, "#{root}/public"
-#   set :views, "#{root}/views"
-# end
-
 error do
   $stdout.puts "Sorry there was a nasty error - #{request.env['sinatra.error'].inspect}"
 end
