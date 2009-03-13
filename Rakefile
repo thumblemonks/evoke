@@ -24,6 +24,6 @@ end
 namespace :db do
   desc "Migrates the DB"
   task :migrate => :environment do
-    Thumblemonks::Database.migrate
+    ThumbleMonks::Database.migrate
   end
 end
