@@ -1,4 +1,4 @@
-module Thumblemonks
+module ThumbleMonks
   module RestClient
     module Shoulda
 
@@ -22,6 +22,6 @@ module Thumblemonks
 
     end # Shoulda
   end # RestClient
-end # Thumblemonks
+end # ThumbleMonks
 
-Test::Unit::TestCase.send(:include, Thumblemonks::RestClient::Shoulda)
+Test::Unit::TestCase.send(:include, ThumbleMonks::RestClient::Shoulda)

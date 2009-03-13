@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__), 'config', 'boot')
 
 configure(:development, :test) { require 'ruby-debug' }
 
-configure do
-  set(:public, "#{Sinatra.application.options.root}/public")
-  set(:views, "#{Sinatra.application.options.root}/views")
-end
+# configure do
+#   set :public, "#{root}/public"
+#   set :views, "#{root}/views"
+# end
 
 error do
   $stdout.puts "Sorry there was a nasty error - #{request.env['sinatra.error'].inspect}"
@@ -57,9 +57,8 @@ put "/callbacks/:guid" do
   end
 end
 
+#
 # Status and stuff
-
-template(:layout) {:application}
 
 catch_all_css
 
@@ -67,7 +66,7 @@ helpers do
   def truncate(str, n)
     str.length > n ? "#{str[0..n]}..." : str
   end
-  
+
   def verbal_status_message(callback)
     if callback.called_back?
       haml '.okay Already evoked callback', :layout => false
@@ -81,5 +80,5 @@ end
 
 get "/status" do
   @status = Status.new
-  haml :status
+  haml :status, :layout => :application
 end

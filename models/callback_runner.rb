@@ -18,7 +18,7 @@ class CallbackRunner
 
   def perform
     @callback.reload
-    http_method = (@callback.method || 'get').to_s
+    http_method = (@callback.http_method || 'get').to_s
     request_args = [@callback.url]
     request_args << @callback.data if requires_payload?(http_method)
     RestClient.send(http_method, *request_args)
@@ -29,8 +29,8 @@ class CallbackRunner
 
 private
 
-  def requires_payload?(method)
-    %w[post put].include?(method)
+  def requires_payload?(http_method)
+    %w[post put].include?(http_method)
   end
 
 end

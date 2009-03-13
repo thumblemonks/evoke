@@ -3,7 +3,8 @@ ENV['APP_ENV'] = 'test'
 require 'rubygems'
 
 require File.join(File.dirname(__FILE__), '..', 'config', 'boot')
-require 'sinatra/test/unit'
+require 'test/unit'
+require 'sinatra/test'
 require File.join(File.dirname(__FILE__), '..', 'evoke')
 
 require 'ostruct'
@@ -16,6 +17,8 @@ require 'chicago/shoulda'
 require_local_lib('../test/shoulda')
 
 class Test::Unit::TestCase
+  include Sinatra::Test
+
   alias_method :old_run, :run
   
   def run(*args, &block)

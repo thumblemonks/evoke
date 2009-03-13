@@ -78,7 +78,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
       @runner.perform
     end
 
-    context "with url but no method" do
+    context "with url but no http_method" do
       setup { @callback, @runner = callback_with_runner(:data => nil) }
       
       should "send a get request with no payload" do
@@ -91,12 +91,12 @@ class CallbackRunnerTest < Test::Unit::TestCase
         @runner.perform
         assert @callback.called_back?
       end
-    end # with url but no method
+    end # with url but no http_method
   
     context "with get" do
       context "and no data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'get', :data => nil)
+          @callback, @runner = callback_with_runner(:http_method => 'get', :data => nil)
         end
   
         should "still not provide a payload" do
@@ -107,7 +107,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
   
       context "and data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'get', :data => 'abc')
+          @callback, @runner = callback_with_runner(:http_method => 'get', :data => 'abc')
         end
   
         should "still not inlcude a payload" do
@@ -120,7 +120,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
     context "with put" do
       context "and no data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'put', :data => nil)
+          @callback, @runner = callback_with_runner(:http_method => 'put', :data => nil)
         end
   
         should "still pass a payload of empty string" do
@@ -131,7 +131,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
   
       context "and data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'put', :data => 'abc')
+          @callback, @runner = callback_with_runner(:http_method => 'put', :data => 'abc')
         end
   
         should "include the data as the payload" do
@@ -144,7 +144,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
     context "with post" do
       context "and no data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'post', :data => nil)
+          @callback, @runner = callback_with_runner(:http_method => 'post', :data => nil)
         end
   
         should "still pass a payload of empty string" do
@@ -155,7 +155,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
   
       context "and data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'post', :data => 'abc')
+          @callback, @runner = callback_with_runner(:http_method => 'post', :data => 'abc')
         end
   
         should "include the data as the payload" do
@@ -168,7 +168,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
     context "with delete" do
       context "and no data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'delete', :data => nil)
+          @callback, @runner = callback_with_runner(:http_method => 'delete', :data => nil)
         end
   
         should "still not provide a payload" do
@@ -179,7 +179,7 @@ class CallbackRunnerTest < Test::Unit::TestCase
   
       context "and data" do
         setup do
-          @callback, @runner = callback_with_runner(:method => 'delete', :data => 'abc')
+          @callback, @runner = callback_with_runner(:http_method => 'delete', :data => 'abc')
         end
   
         should "still not inlcude a payload" do

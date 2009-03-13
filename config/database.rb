@@ -1,12 +1,11 @@
 require 'activerecord'
 gem 'sqlite3-ruby'
 
-module Thumblemonks
+module ThumbleMonks
   module Database
-    # 'test' => {'adapter' => 'sqlite3', 'database' => ':memory:'},
-    # 'production' => {'adapter' => "sqlite3", 'database' => "db/production.db"}
+    # 'test' => {'adapter' => 'sqlite3', 'database' => 'db/test.db'},
     ConnectionOptions = {
-      'test' => {'adapter' => 'sqlite3', 'database' => 'db/test.db'},
+      'test' => {'adapter' => 'sqlite3', 'database' => ':memory:'},
       'development' => {'adapter' => 'sqlite3', 'database' => 'db/development.db'},
       'production' => {
         'adapter' => 'mysql', 'database' => 'evoke_production',
@@ -37,7 +36,7 @@ module Thumblemonks
       ActiveRecord::Migrator.migrate("#{File.dirname(__FILE__)}/../db/migrations")
     end
   end # Database
-end # Thumblemonks
+end # ThumbleMonks
 
-Thumblemonks::Database.fire_me_up(ENV['APP_ENV'])
-Thumblemonks::Database.migrate
+ThumbleMonks::Database.fire_me_up(ENV['APP_ENV'])
+ThumbleMonks::Database.migrate

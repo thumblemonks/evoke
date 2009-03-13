@@ -8,6 +8,7 @@ class Status
   def pending_callback_count; Callback.pending.count; end
 
   def consumer_running?
+    # This is how we ask God what's going on from the API
     DRb.start_service("druby://127.0.0.1:0")
     server = DRbObject.new(nil, God::Socket.socket(17165))
 
