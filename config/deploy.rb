@@ -48,14 +48,3 @@ cd #{release_path} &&
 ln -nfs #{shared_path}/config/dblogin.yml #{release_path}/config/dblogin.yml
 CMD
 end
-
-# after "deploy:setup" do
-#   run "mkdir #{shared_path}/config"
-# end
-
-# before "deploy:migrate" do
-#   next unless cold_deploy
-#   run "cp #{current_path}/config/dblogin.yml.example #{shared_path}/config/dblogin.yml"
-#   puts "\n---\nShared DB Config file has been set up at #{shared_path}/config/dblogin.yml - edit and hit enter to continue."
-#   nil while $stdin.gets != "\n"
-# end

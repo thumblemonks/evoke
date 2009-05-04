@@ -73,4 +73,14 @@ class CallbackTest < Test::Unit::TestCase
     end
   end
 
+  context "http_method" do
+    should "return get if nil" do
+      assert_equal 'get', Factory(:callback).http_method
+    end
+
+    should "return whatever it was provided if not nil" do
+      assert_equal 'bologna', Factory(:callback, :http_method => 'bologna').http_method
+    end
+  end
+
 end

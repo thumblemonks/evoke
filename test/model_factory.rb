@@ -15,7 +15,6 @@ Factory.define :callback do |callback|
   callback.data 'key=12345'
   callback.callback_at Time.now + 86400
   callback.called_back false
-  # callback.guid {Factory.next(:guid)}
 end
 
 Factory.define :callback_with_job, :class => Callback do |callback|

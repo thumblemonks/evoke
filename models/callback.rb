@@ -4,8 +4,7 @@ class Callback < ActiveRecord::Base
   validates_presence_of :url, :callback_at
   validates_uniqueness_of :guid, :allow_nil => true
 
-  before_save :data_cannot_be_nil
-  before_save :guid_cannot_be_blank
+  before_save :data_cannot_be_nil, :http_method_cannot_be_nil, :guid_cannot_be_blank
 
   named_scope :recent, :order => 'created_at desc', :limit => 10
   named_scope :pending, :conditions => {:called_back => false}
@@ -25,5 +24,9 @@ private
 
   def guid_cannot_be_blank
     write_attribute(:guid, nil) if guid && guid.strip == ''
+  end
+
+  def http_method_cannot_be_nil
+    write_attribute(:http_method, 'get') if http_method.nil?
   end
 end
