@@ -15,6 +15,4 @@ STDERR.reopen(log)
 
 require 'evoke'
 
-map "/" do
-  run Sinatra::Application
-end
+map("/") { run Evoke }

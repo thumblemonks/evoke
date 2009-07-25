@@ -1,6 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class EvokeTest < Test::Unit::TestCase
+  def app
+    @app = Evoke
+  end
+
   context "adding a callback" do
     context "when missing url" do
       setup { post "/callbacks", Factory.attributes_for(:callback, :url => "") }
