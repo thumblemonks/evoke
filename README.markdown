@@ -63,18 +63,18 @@ delayed_job
 
 * [Sinatra](http://github.com/bmizerany/sinatra/tree/master)
 * [Chicago](http://github.com/thumblemonks/chicago/tree/master)
-* HAML
+* HAML/SASS
 * Ruby JSON
 * [Delayed Job](http://github.com/tobi/delayed_job/tree/master)
 * Rest Client
 * ActiveRecord & Sqlite3-ruby
+* Sinatra Authorization (sinatra-authorization): for the status page
 
 ## Setting up an app
 
 We're still working this out.
 
 ### Installation
-
 
     $ TBD
 
