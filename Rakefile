@@ -27,3 +27,10 @@ namespace :db do
     ThumbleMonks::Database.migrate
   end
 end
+
+namespace :log do
+  desc "Clear contents from log files"
+  task :clear => :environment do
+    Dir["#{File.dirname(__FILE__)}/log/*.log"].each { |file| File.truncate(file, 0) }
+  end
+end # log

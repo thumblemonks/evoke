@@ -4,6 +4,7 @@ class Evoke < Sinatra::Base
   register Sinatra::Chicago
   helpers Sinatra::Chicago::Helpers
   helpers Sinatra::Chicago::Responders
+  helpers Sinatra::Authorization
 
   error do
     $stdout.puts "Sorry there was a nasty error - #{request.env['sinatra.error'].inspect}"
@@ -59,6 +60,10 @@ class Evoke < Sinatra::Base
   catch_all_css
 
   helpers do
+    def authorize(username, password)
+      [username, password] == Configuration["authorization"].values_at("username", "password")
+    end
+
     def truncate(str, n)
       str.length > n ? "#{str[0..n]}..." : str
     end
@@ -75,6 +80,7 @@ class Evoke < Sinatra::Base
   end
 
   get "/status" do
+    login_required
     @status = Status.new
     haml :status, :layout => :application
   end

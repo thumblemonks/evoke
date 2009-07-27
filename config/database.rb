@@ -3,30 +3,9 @@ gem 'sqlite3-ruby'
 
 module ThumbleMonks
   module Database
-    # 'test' => {'adapter' => 'sqlite3', 'database' => 'db/test.db'},
-    ConnectionOptions = {
-      'test' => {'adapter' => 'sqlite3', 'database' => ':memory:'},
-      'development' => {'adapter' => 'sqlite3', 'database' => 'db/development.db'},
-      'production' => {
-        'adapter' => 'mysql', 'database' => 'evoke_production',
-        'encoding' => 'utf8', 'timezone' => '+00:00',
-        'socket' => '/opt/local/var/run/mysql5/mysqld.sock',
-        'username' => 'foo', 'password' => 'bar'
-      }
-    }
-
-    def self.database_login_filename
-      File.dirname(__FILE__) + '/dblogin.yml'
-    end
-
     def self.fire_me_up(env)
-      puts "Connecting to database"
-      if File.exist?(database_login_filename)
-        puts "Loading database login configuration for system [#{env}]"
-        login_options = YAML.load_file(database_login_filename)
-        ConnectionOptions[env].merge!(login_options[env]) if login_options.has_key?(env)
-      end
-      ActiveRecord::Base.configurations = ConnectionOptions
+      puts "Connecting to #{env} database"
+      ActiveRecord::Base.configurations = Configuration["database"]
       ActiveRecord::Base.logger = Logger.new("log/#{env}.log")
       ActiveRecord::Base.establish_connection(env.to_s)
     end

@@ -1,0 +1,16 @@
+# htaccess login
+authorization:
+  username: foo
+  password: bar
+
+# database configuration
+database:
+  test:
+    adapter: sqlite3
+    database: :memory:
+  development:
+    adapter: sqlite3
+    database: db/development.db
+  production:
+    adapter: sqlite3
+    database: db/production.db
