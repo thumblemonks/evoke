@@ -40,12 +40,11 @@ set :cold_deploy, false
 before("deploy:cold") { set :cold_deploy, true }
 
 #
-# DBLOGIN.YML support
+# CONFIG.YML support
 
 task :after_update_code, :roles => :app, :except => {:no_symlink => true} do 
   run <<-CMD 
 cd #{release_path} && 
 ln -nfs #{shared_path}/config/config.yml #{release_path}/config/config.yml
-ln -nfs #{shared_path}/config/dblogin.yml #{release_path}/config/dblogin.yml
 CMD
 end
