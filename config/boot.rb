@@ -7,7 +7,7 @@ require 'yaml'
 Configuration = YAML.load_file(File.join(File.dirname(__FILE__), 'config.yml'))
 
 LIBS = %w[rubygems logger config/database rest_client delayed_job haml sass
-  sinatra chicago sinatra/authorization]
+  sinatra/base chicago sinatra/authorization]
 LIBS.each { |lib| require lib }
 require_local_lib('../models')
 

@@ -33,7 +33,4 @@ class Test::Unit::TestCase
       end
     end
   end
-
-  def O(*args) OpenStruct.new(*args); end # Shortcut for OpenStruct
-
 end

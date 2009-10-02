@@ -1,19 +1,19 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class EvokeTest < Test::Unit::TestCase
+class EvokeApiTest < Test::Unit::TestCase
   def app
-    @app = Evoke
+    @app = Evoke::Api
   end
 
   context "adding a callback" do
     context "when missing url" do
-      setup { post "/callbacks", Factory.attributes_for(:callback, :url => "") }
+      setup { post "/callbacks/", Factory.attributes_for(:callback, :url => "") }
       should_have_response_status 422
       should_have_json_response :errors => ["Url can't be blank"]
     end
 
     context "when missing call back at" do
-      setup { post "/callbacks", Factory.attributes_for(:callback, :callback_at => "") }
+      setup { post "/callbacks/", Factory.attributes_for(:callback, :callback_at => "") }
       should_have_response_status 422
       should_have_json_response :errors => ["Callback at can't be blank"]
     end
@@ -22,7 +22,7 @@ class EvokeTest < Test::Unit::TestCase
       setup do
         @guid = Factory.next(:guid)
         CallbackRunner.expects(:make_job_from_callback!).with(anything)
-        post "/callbacks", Factory.attributes_for(:callback, :guid => @guid)
+        post "/callbacks/", Factory.attributes_for(:callback, :guid => @guid)
       end
       should_have_response_status 201
       should_have_json_response { Callback.first }
@@ -147,24 +147,5 @@ class EvokeTest < Test::Unit::TestCase
       should_have_json_response(/^$/)
     end
   end # deleting a callback
-
-  context "displaying status" do
-    context "when logged in" do
-      setup do
-        10.times { |n| Factory(:callback, :guid => "aphex-analord-#{n}") }
-        credentials = ["foo:bar"].pack("m*")
-        get '/status', {}, { "HTTP_AUTHORIZATION" => "Basic #{credentials}" }
-      end
-
-      should_have_response_body(/(li class='callback')/)
-      should_have_response_status 200
-    end
-
-    context "when not logged in" do
-      setup { get '/status' }
-
-      should_have_response_status 401
-    end
-  end # displaying status
 
 end

@@ -5,4 +5,6 @@ require 'evoke'
 
 use Rack::CommonLogger, File.new("#{File.dirname(__FILE__)}/log/#{ENV['APP_ENV']}.log", 'a+')
 
-map("/") { run Evoke }
+use Evoke::Api
+use Evoke::Status
+run Sinatra::Base

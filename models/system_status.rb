@@ -1,7 +1,7 @@
 require 'drb'
 require 'god'
 
-class Status
+class SystemStatus
   def recent_callbacks; Callback.recent; end
   def total_callback_count; Callback.count; end
   def jobs_in_queue_count; Delayed::Job.count; end
