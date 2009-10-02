@@ -83,4 +83,17 @@ class CallbackTest < Test::Unit::TestCase
     end
   end
 
+  context "destroying a callback" do
+    setup do
+      callback = Factory(:callback)
+      CallbackRunner.make_job_from_callback!(callback)
+      callback.reload
+      @job = callback.delayed_job
+      callback.destroy
+    end
+
+    should "delete the job tied to the callback" do
+      assert_nil Delayed::Job.find_by_id(@job.id)
+    end
+  end
 end

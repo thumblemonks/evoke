@@ -1,5 +1,5 @@
 class Callback < ActiveRecord::Base
-  belongs_to :delayed_job, :class_name => 'Delayed::Job'
+  belongs_to :delayed_job, :class_name => 'Delayed::Job', :dependent => :destroy
 
   validates_presence_of :url, :callback_at
   validates_uniqueness_of :guid, :allow_nil => true
