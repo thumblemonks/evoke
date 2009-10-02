@@ -14,9 +14,10 @@ class Evoke < Sinatra::Base
 
   not_found { throw :halt, [404, json_response('')] }
 
-  def valid_record(record)
-    status(201)
-    json_response(record)
+  def valid_record(record, options={})
+    options = {:status => 200, :response => record}.merge(options)
+    status(options[:status])
+    json_response(options[:response])
   end
 
   def invalid_record(record)
@@ -25,10 +26,10 @@ class Evoke < Sinatra::Base
     throw :halt, [422, json_response(:errors => record.errors.full_messages)]
   end
 
-  def manage_resource(resource)
+  def manage_resource(resource, options={})
     raise Sinatra::NotFound unless resource
     yield(resource) if block_given?
-    valid_record(resource)
+    valid_record(resource, options)
   rescue ActiveRecord::RecordInvalid => e
     invalid_record(e.record)
   end
@@ -40,7 +41,7 @@ class Evoke < Sinatra::Base
   end
 
   post "/callbacks" do
-    manage_resource(Callback.new(params)) do |callback|
+    manage_resource(Callback.new(params), :status => 201) do |callback|
       callback.save!
       CallbackRunner.make_job_from_callback!(callback)
     end
@@ -52,6 +53,21 @@ class Evoke < Sinatra::Base
       callback.update_attributes!(attributes)
       CallbackRunner.replace_job_for_callback!(callback)
     end
+  end
+
+  delete "/callbacks/:guid" do
+    manage_resource(Callback.by_guid(params['guid']), :response => nil) do |callback|
+      callback.destroy
+    end
+    # begin
+    #   callback = Callback.by_guid(params['guid'])
+    #   raise Sinatra::NotFound unless callback
+    #   callback.destroy
+    #   status(200)
+    #   json_response("")
+    # rescue ActiveRecord::RecordInvalid => e
+    #   invalid_record(e.record)
+    # end
   end
 
   #

@@ -51,7 +51,7 @@ class EvokeTest < Test::Unit::TestCase
         put "/callbacks/#{@callback.guid}"
         @callback.reload
       end
-      should_have_response_status 201
+      should_have_response_status 200
       should_have_json_response { @callback }
       should_change "Callback.count", :by => 0
     end
@@ -61,7 +61,7 @@ class EvokeTest < Test::Unit::TestCase
         put "/callbacks/#{@callback.guid}", :url => "http://bar.baz"
         @callback.reload
       end
-      should_have_response_status 201
+      should_have_response_status 200
       should_have_json_response %r[\"url\":\"http:\\/\\/bar\.baz\"]
       should_change "Callback.count", :by => 0
     end
@@ -72,7 +72,7 @@ class EvokeTest < Test::Unit::TestCase
         put "/callbacks/#{@callback.guid}", :callback_at => @callback_at
         @callback.reload
       end
-      should_have_response_status 201
+      should_have_response_status 200
       should_have_json_response do
         time = @callback_at.strftime("%Y/%m/%d %H:%M:%S %z")
         %r[\"callback_at\":\"#{time}\"]
@@ -121,10 +121,32 @@ class EvokeTest < Test::Unit::TestCase
         @callback = Factory(:callback, :guid => 'kids-with-guns')
         get '/callbacks/kids-with-guns'
       end
-      should_have_response_status 201
+      should_have_response_status 200
       should_have_json_response { @callback }
     end
   end # retrieving a callback
+
+  context "deleting a callback" do
+    context "without a guid" do
+      setup { delete '/callbacks' }
+      should_have_response_status 404
+    end
+
+    context "without an existing guid" do
+      setup { delete '/callbacks/franken-furter' }
+      should_have_response_status 404
+    end
+
+    context "with a valid guid" do
+      setup do
+        @callback = Factory(:callback, :guid => 'kids-with-guns')
+        Callback.any_instance.expects(:destroy)
+        delete '/callbacks/kids-with-guns'
+      end
+      should_have_response_status 200
+      should_have_json_response(/^$/)
+    end
+  end # deleting a callback
 
   context "displaying status" do
     context "when logged in" do
