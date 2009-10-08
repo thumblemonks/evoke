@@ -7,13 +7,13 @@ class EvokeApiTest < Test::Unit::TestCase
 
   context "adding a callback" do
     context "when missing url" do
-      setup { post "/callbacks/", Factory.attributes_for(:callback, :url => "") }
+      setup { post "/callbacks", Factory.attributes_for(:callback, :url => "") }
       should_have_response_status 422
       should_have_json_response :errors => ["Url can't be blank"]
     end
 
     context "when missing call back at" do
-      setup { post "/callbacks/", Factory.attributes_for(:callback, :callback_at => "") }
+      setup { post "/callbacks", Factory.attributes_for(:callback, :callback_at => "") }
       should_have_response_status 422
       should_have_json_response :errors => ["Callback at can't be blank"]
     end
@@ -22,7 +22,7 @@ class EvokeApiTest < Test::Unit::TestCase
       setup do
         @guid = Factory.next(:guid)
         CallbackRunner.expects(:make_job_from_callback!).with(anything)
-        post "/callbacks/", Factory.attributes_for(:callback, :guid => @guid)
+        post "/callbacks", Factory.attributes_for(:callback, :guid => @guid)
       end
       should_have_response_status 201
       should_have_json_response { Callback.first }

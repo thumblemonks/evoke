@@ -40,7 +40,7 @@ module Evoke
       manage_resource(Callback.by_guid(params['guid']))
     end
 
-    post "/callbacks/" do
+    post "/callbacks" do
       manage_resource(Callback.new(params), :status => 201) do |callback|
         callback.save!
         CallbackRunner.make_job_from_callback!(callback)
