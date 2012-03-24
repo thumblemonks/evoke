@@ -1,7 +1,8 @@
 class Callback < ActiveRecord::Base
   belongs_to :delayed_job, :class_name => 'Delayed::Job', :dependent => :destroy
 
-  validates_presence_of :url, :callback_at
+  validates_presence_of :url
+  validates_presence_of :callback_at
   validates_uniqueness_of :guid, :allow_nil => true
 
   before_save :data_cannot_be_nil, :http_method_cannot_be_nil, :guid_cannot_be_blank

@@ -41,6 +41,7 @@ module Evoke
     end
 
     post "/callbacks" do
+      puts params.inspect
       manage_resource(Callback.new(params), :status => 201) do |callback|
         callback.save!
         CallbackRunner.make_job_from_callback!(callback)

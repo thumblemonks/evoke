@@ -1,3 +1,5 @@
 db/*.db
 log/*
 config/config.yml
+tmp/*
+
